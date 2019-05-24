@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -9,7 +10,10 @@ def index():
     
 @app.route("/about")
 def about():
-    return render_template("about.html", page_title="About")
+    data = []
+    with open("data/company.json", "r") as json_data:
+        data = json.load(json_data)
+    return render_template("about.html", page_title="About", company=data)
     
 @app.route("/contact")
 def contact(): 
@@ -21,9 +25,14 @@ def careers():
 
 
 if __name__ == "__main__":
-    """
-    configuration used to host the website in the cloud9
-    """
+    
+    #configuration used to host the website in the cloud9
     app.run(host=os.environ.get("IP"), 
             port=int(os.environ.get("PORT")), 
             debug=True)
+            
+    #configuration used to host on the local server
+    #app.run(host="127.0.0.1", port="5500", debug=True)
+            
+            
+    
